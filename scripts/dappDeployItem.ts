@@ -11,11 +11,11 @@ export async function run(provider: NetworkProvider, args: string[]) {
 
     await nftDapp.sendDeployItemMsg(provider.sender(), {
             itemIndex: 0,
+            collectionId: 0,
+            queryId: Date.now(),
+            
             itemOwnerAddress: address,
             itemAuthorityAddress: address,
-          // itemContent: '1',
-            queryId: Date.now(),
-            collectionId: 16,
     });
 
     ui.write("Item successfully deployed!");

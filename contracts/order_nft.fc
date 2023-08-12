@@ -178,10 +178,11 @@ int min_tons_for_storage() asm "50000000 PUSHINT"; ;; 0.05 TON
       return ();
     }
 
-    if (op == op::change_record) { 
+    if (op == op::change_record) {
+
         throw_unless(411, equal_slices(sender_address, owner_address));
         int key = in_msg_body~load_uint(256);
-        int has_value = in_msg_body.slice_refs() > 0;
+        int has_value = in_msg_body.й() > 0;
 
         slice cs = content.begin_parse();
         throw_unless(412, cs~load_uint(8) == 0); ;; data onchain tag

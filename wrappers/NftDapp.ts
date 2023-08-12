@@ -66,7 +66,7 @@ export class NftDapp implements Contract {
             value: toNano('0.1'),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.deployCollection, 32)
+                .storeUint(Opcodes.deployCollection, 256)
                 .storeUint(opts.queryId, 64)
                 .storeRef(opts.collectionCode)
                 .storeRef(opts.collectionData)
@@ -86,19 +86,41 @@ export class NftDapp implements Contract {
         }
     ) {
 
-     //   const nftContent = Dictionary.empty(); // TO DO: form data dictionary
+        const nftContent = Dictionary.empty(); // TO DO: form data dictionar
+        // image
+        nftContent.set("image".charCodeAt(0), beginCell().storeUint(BigInt("39CE8A1B6A59BB69E758694806DB9128FF6F31839EFED720216F1796E28F9B93"), 256).endCell());
+        // status_of_order
+        nftContent.set("status_of_order".charCodeAt(0), beginCell().storeUint(BigInt("АКТИВНО"), 256).endCell());
+        // name_of_order
+        nftContent.set("name_of_order".charCodeAt(0), beginCell().storeUint(BigInt("Доработать мета-данные и память смарт-контракта"), 256).endCell());
+        // amount
+        nftContent.set("amount".charCodeAt(0), beginCell().storeUint(BigInt("1000000000"), 256).endCell());
+        // order_description
+        nftContent.set("order_description".charCodeAt(0), beginCell().storeUint(BigInt("Необходимо доработать смарт-контракт таким образом, что бы при деплое он хранил ссылку на одни метаданные, а после передачи собственности с кошелька владельца метаданные менялись на другие. Изначально элементы коллекции должны быть скрыты (по аналогии с лутбоксом). После продажи на маркетплейсе у владельца должен появиться"), 256).endCell());
+        // technical_assigment
+        nftContent.set("technical_assigment".charCodeAt(0), beginCell().storeUint(BigInt("4014BD338993CFA485CCB6DFAD0332443199F46D4CCF9F87BE1B7D76AA9038F0"), 256).endCell());
+        // starting_unix_time
+        nftContent.set("starting_unix_time".charCodeAt(0), beginCell().storeUint(BigInt("1691851283"), 256).endCell());
+        // ending_unix_time
+        nftContent.set("ending_unix_time".charCodeAt(0), beginCell().storeUint(BigInt("1691851283"), 256).endCell());
+        // creation_unix_time
+        nftContent.set("creation_unix_time".charCodeAt(0), beginCell().storeUint(BigInt("1691851283"), 256).endCell());
+        // category
+        nftContent.set("category".charCodeAt(0), beginCell().storeUint(BigInt("Разработка на блокчейне TON"), 256).endCell());
+        // customer_addr
+        nftContent.set("customer_addr".charCodeAt(0), beginCell().storeUint(BigInt("EQDWfTV0XtuUrRYF8BqOm1U2yr3axYlpvxxnGXyx2nwIypM3"), 256).endCell());
 
         const nftItemMessage = beginCell();
 
         nftItemMessage.storeAddress(opts.itemOwnerAddress);
         nftItemMessage.storeAddress(opts.itemAuthorityAddress);  // This line is for SBT
-      //  nftItemMessage.storeDict(nftContent);
+        nftItemMessage.storeRef(nftContent);
 
         await provider.internal(via, {
             value: toNano('0.05'),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.deployNftItem, 32)
+                .storeUint(Opcodes.deployNftItem, 256)
                 .storeUint(opts.queryId, 64)
                 .storeUint(opts.collectionId, 64)
                 .storeUint(opts.itemIndex, 64)
@@ -130,7 +152,7 @@ export class NftDapp implements Contract {
             value: toNano('0.05') * BigInt(dict.size),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.batchNftDeploy, 32)
+                .storeUint(Opcodes.batchNftDeploy, 256)
                 .storeUint(opts.queryId, 64)
                 .storeUint(opts.collectionId, 64)
                 .storeDict(dict)
@@ -160,7 +182,7 @@ export class NftDapp implements Contract {
             value: toNano('0.05') * BigInt(dict.size),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.batchNftDeploy, 32)
+                .storeUint(Opcodes.batchNftDeploy, 256)
                 .storeUint(opts.queryId, 64)
                 .storeUint(opts.collectionId, 64)
                 .storeDict(dict)
@@ -183,7 +205,7 @@ export class NftDapp implements Contract {
             value: opts.value,
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.changeCollectionOwner, 32)
+                .storeUint(Opcodes.changeCollectionOwner, 256)
                 .storeUint(opts.queryId, 64)
                 .storeUint(opts.collectionId, 64)
                 .storeAddress(opts.newOwner)
@@ -222,7 +244,7 @@ export class NftDapp implements Contract {
             value: toNano('0.05'),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.editCollectionContent, 32)
+                .storeUint(Opcodes.editCollectionContent, 256)
                 .storeUint(opts.queryId, 64)
                 .storeUint(opts.collectionId, 64)
                 .storeRef(contentCell)
@@ -246,7 +268,7 @@ export class NftDapp implements Contract {
             value: toNano('0.05'),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.transferItem, 32)
+                .storeUint(Opcodes.transferItem, 256)
                 .storeUint(opts.queryId, 64)
                 .storeAddress(opts.itemAddress)
                 .storeAddress(opts.newOwner)
@@ -273,7 +295,7 @@ export class NftDapp implements Contract {
             value: toNano('0.05'),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.editItemContent, 32)
+                .storeUint(Opcodes.editItemContent, 256)
                 .storeUint(opts.queryId, 64)
                 .storeAddress(opts.itemAddress)
                 .storeRef(nftContent)
@@ -293,7 +315,7 @@ export class NftDapp implements Contract {
             value: toNano('0.05'),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.destroySbtItem, 32)
+                .storeUint(Opcodes.destroySbtItem, 256)
                 .storeUint(opts.queryId, 64)
                 .storeAddress(opts.itemAddress)
             .endCell(),
@@ -312,7 +334,7 @@ export class NftDapp implements Contract {
             value: toNano('0.05'),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.withdrawFunds, 32)
+                .storeUint(Opcodes.withdrawFunds, 256)
                 .storeUint(opts.queryId, 64)
                 .storeCoins(opts.withdrawAmount)
             .endCell(),
@@ -331,7 +353,7 @@ export class NftDapp implements Contract {
             value: toNano('0.05'),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.editDappCode, 32)
+                .storeUint(Opcodes.editDappCode, 256)
                 .storeUint(opts.queryId, 64)
                 .storeRef(opts.newCode)
             .endCell(),
@@ -350,7 +372,7 @@ export class NftDapp implements Contract {
             value: toNano('0.05'),
             sendMode: SendMode.PAY_GAS_SEPARATLY,
             body: beginCell()
-                .storeUint(Opcodes.changeOwner, 32)
+                .storeUint(Opcodes.changeOwner, 256)
                 .storeUint(opts.queryId, 64)
                 .storeAddress(opts.newOwner)
             .endCell(),
