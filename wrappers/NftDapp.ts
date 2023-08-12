@@ -85,9 +85,8 @@ export class NftDapp implements Contract {
             itemAuthorityAddress?: Address;
         }
     ) {
-
         const nftContent = Dictionary.empty(); // TO DO: form data dictionar
-        // image
+        // imagew
         nftContent.set("image".charCodeAt(0), beginCell().storeUint(BigInt("39CE8A1B6A59BB69E758694806DB9128FF6F31839EFED720216F1796E28F9B93"), 256).endCell());
         // status_of_order
         nftContent.set("status_of_order".charCodeAt(0), beginCell().storeUint(BigInt("АКТИВНО"), 256).endCell());
@@ -114,7 +113,7 @@ export class NftDapp implements Contract {
 
         nftItemMessage.storeAddress(opts.itemOwnerAddress);
         nftItemMessage.storeAddress(opts.itemAuthorityAddress);  // This line is for SBT
-        nftItemMessage.storeRef(nftContent);
+        nftItemMessage.storeDict(nftContent);
 
         await provider.internal(via, {
             value: toNano('0.05'),
